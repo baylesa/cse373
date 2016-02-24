@@ -51,8 +51,46 @@ public class ImageComponents extends JFrame implements ActionListener {
     int h; // height of the current image.
 
     int[][] parentID; // For your forest of up-trees.
-    int find(int pixelID) {return -1;}         // Part of your UNION-FIND implementation. You need to complete the implementation of this.
-    void union(int pixelID1, int pixelID2) {}  // Another part of your UNION-FIND implementation.  Also complete this one.
+    
+    int find(int pixelID) { // Part of your UNION-FIND implementation. You need to complete the implementation of this.
+    	int x = getXcoored(pixelID);
+    	int y = getYcoored(pixelID);
+    	return parentID[x][y];
+    } 
+   
+    
+    void union(int pixelID1, int pixelID2) {// Another part of your UNION-FIND implementation.  Also complete this one.
+    	if(pixelID1 <= pixelID2){
+    		System.out.println(find(pixelID2));
+    		
+    	}
+    	else{
+    		System.out.println(find(pixelID1));
+    	}
+    	
+    }  
+    
+    int getXcoored(int pixelID){
+    	for(int i = 0; i < h; i++){
+    		for(int j = 0; j < w; j++){
+    			if(parentID[j][i] == pixelID){
+    				return j; 
+    			}
+    		}
+    	}
+    	return -1; 
+    }
+    
+    int getYcoored(int pixelID){
+    	for(int i = 0; i < h; i++){
+    		for(int j = 0; j < w; j++){
+    			if(parentID[i][j] == pixelID){
+    				return j; 
+    			}
+    		}
+    	}
+    	return -1; 
+    }
     
     JPanel viewPanel; // Where the image will be painted.
     JPopupMenu popup;
