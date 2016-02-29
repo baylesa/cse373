@@ -57,7 +57,14 @@ public class ExploredGraph {
 		ExploredGraph eg = new ExploredGraph();
 		// Test the vertex constructor: 
 		Vertex v0 = eg.new Vertex("[[4,3,2,1],[],[]]");
+		Vertex v1 = eg.new Vertex("[[4,3,2,1],[1],[]]");
 		System.out.println(v0);
+		System.out.println(v1);
+		Edge e1 = eg.new Edge(v0, v1);
+		System.out.println(e1.toString());
+		System.out.println(e1.getStartPoint(true));
+		System.out.println(e1.getStartPoint(false));
+		System.out.println("Tests Finished");
 		// Add your own tests here.
 		// The autograder code will be used to test your basic functionality later.
 
@@ -101,16 +108,20 @@ public class ExploredGraph {
 		}
 	}
 	
+	//Represents an edge in a graph between two vertexes 
 	class Edge {
 		private Vertex v1;//Start point
 		private Vertex v2;//End point
 		
+		//Constructor takes in two Vertex objects and to show the start and end of the edge
 		public Edge(Vertex vi, Vertex vj) {
 			v1 = vi;
 			v2 = vj;
 		}
 		
-		public Vertex getEndPoint1(boolean choice){
+		//Takes in a boolean as a parameter, if true the start point is returned
+		//IF false the end point is returned 
+		public Vertex getStartPoint(boolean choice){
 			if(choice){
 				return v1;
 			}
@@ -119,14 +130,12 @@ public class ExploredGraph {
 			}
 		}
 		
+		//Returns a string representing the edge 
 		public String toString(){
 			return "Edge from ["+ v1.toString() + "] to [" + v2.toString() + "]";
 		}
 		
-//		
-//		public getEndPoint2(){
-//			
-//		}
+
 	}
 	
 	class Operator {
@@ -136,35 +145,48 @@ public class ExploredGraph {
 			this.i = i;
 			this.j = j;
 		}
-
-		Function<Vertex, Boolean> getPrecondition() {
-			// TODO: return a function that can be applied to a vertex (provided
-			// that the precondition is true) to get a "successor" vertex -- the
-			// result of making the move.
-			return new Function<Vertex, Boolean>() {
-				@Override
-				public Boolean apply(Vertex vertex) {
-					return false;
-				}
-			};
+		
+		
+		public boolean getPrecondition(Vertex v){
+			boolean flag = false; 
+			
+			return flag;
 		}
-
-		Function<Vertex, Vertex> getTransition() {
-			// TODO: should return a function that can be applied to a vertex
-			// (provided that the precondition is true) to get a "successor"
-			// vertex -- the result of making the move.
-			return new Function<Vertex, Vertex>() {
-				@Override
-				public Vertex apply(Vertex vertex) {
-					return null;
-				}
-			};
+		
+		public Vertex getTransition(){
+			
+			return null;
 		}
+		
+//		Function<Vertex, Boolean> getPrecondition() {
+//			// TODO: return a function that can be applied to a vertex (provided
+//			// that the precondition is true) to get a "successor" vertex -- the
+//			// result of making the move.
+//			return new Function<Vertex, Boolean>() {
+//				@Override
+//				public Boolean apply(Vertex vertex) {
+//					
+//					return false;
+//				}
+//			};
+//		}
+//
+//		Function<Vertex, Vertex> getTransition() {
+//			// TODO: should return a function that can be applied to a vertex
+//			// (provided that the precondition is true) to get a "successor"
+//			// vertex -- the result of making the move.
+//			return new Function<Vertex, Vertex>() {
+//				@Override
+//				public Vertex apply(Vertex vertex) {
+//					return null;
+//				}
+//			};
+//		}
 
 		public String toString() {
 			// TODO: return a string good enough
 			// to distinguish different operators
-			return "";
+			return "This is operator: [" + i + ", " + j+"]";
 		}
 	}
 
