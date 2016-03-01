@@ -40,14 +40,35 @@ public class ExploredGraph {
 	}
 
 	public void initialize() {
-		// Implement this
+		Ve.clear();
+		Ee.clear();
 	}
-	public int nvertices() {return 0;} // Implement this.
-	public int nedges() {return 0;}    // Implement this.
-	public void dfs(Vertex vi, Vertex vj) {} // Implement this.
-	public void bfs(Vertex vi, Vertex vj) {} // Implement this.
-	public ArrayList<Vertex> retrievePath(Vertex vi) {return null;} // Implement this.
-	public ArrayList<Vertex> shortestPath(Vertex vi, Vertex vj) {return null;} // Implement this.
+	
+	public int nvertices() {
+		return Ve.size();
+	}
+	
+	public int nedges() {
+		return Ee.size();
+	}    
+	
+	public void dfs(Vertex vi, Vertex vj) {
+		
+	} // Implement this.
+	
+	public void bfs(Vertex vi, Vertex vj) {
+		
+	} // Implement this.
+	
+	public ArrayList<Vertex> retrievePath(Vertex vi) {
+		return null;
+	} // Implement this.
+	
+	
+	public ArrayList<Vertex> shortestPath(Vertex vi, Vertex vj) {
+		return null;
+	} // Implement this.
+	
 	public Set<Vertex> getVertices() {return Ve;} 
 	public Set<Edge> getEdges() {return Ee;} 
 	/**
@@ -57,17 +78,17 @@ public class ExploredGraph {
 		ExploredGraph eg = new ExploredGraph();
 		// Test the vertex constructor: 
 		Vertex v0 = eg.new Vertex("[[4,3,2,1],[],[]]");
-		Vertex v1 = eg.new Vertex("[[4,3,2],[1],[]]");
+		Vertex v1 = eg.new Vertex("[[4,3,1],[],[2]]");
 		System.out.println(v0);
 		System.out.println(v1);
 		Edge e1 = eg.new Edge(v0, v1);
 		System.out.println(e1.toString());
-		System.out.println(e1.getStartPoint(true));
-		System.out.println(e1.getStartPoint(false));
+		System.out.println(e1.getEndPoint1());
+		System.out.println(e1.getEndPoint2());
 		Operator op1 = eg.new Operator(2,0);
-		boolean x = op1.getPrecondition(v0);
+		boolean x = op1.getPrecondition(v1);
 		if(x){
-			op1.getTransition(v0);
+			op1.getTransition(v1);
 		}else{
 			System.out.println("Wrong Precondition");
 		}
@@ -126,15 +147,12 @@ public class ExploredGraph {
 			v2 = vj;
 		}
 		
-		//Takes in a boolean as a parameter, if true the start point is returned
-		//IF false the end point is returned 
-		public Vertex getStartPoint(boolean choice){
-			if(choice){
-				return v1;
-			}
-			else{
-				return v2;
-			}
+		public Vertex getEndPoint1(){
+			return v1;
+		}
+		
+		public Vertex getEndPoint2(){
+			return v2;
 		}
 		
 		//Returns a string representing the edge 
