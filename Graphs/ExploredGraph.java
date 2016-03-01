@@ -57,13 +57,20 @@ public class ExploredGraph {
 		ExploredGraph eg = new ExploredGraph();
 		// Test the vertex constructor: 
 		Vertex v0 = eg.new Vertex("[[4,3,2,1],[],[]]");
-		Vertex v1 = eg.new Vertex("[[4,3,2,1],[1],[]]");
+		Vertex v1 = eg.new Vertex("[[4,3,2],[1],[]]");
 		System.out.println(v0);
 		System.out.println(v1);
 		Edge e1 = eg.new Edge(v0, v1);
 		System.out.println(e1.toString());
 		System.out.println(e1.getStartPoint(true));
 		System.out.println(e1.getStartPoint(false));
+		Operator op1 = eg.new Operator(2,0);
+		boolean x = op1.getPrecondition(v0);
+		if(x){
+			op1.getTransition(v0);
+		}else{
+			System.out.println("Wrong Precondition");
+		}
 		System.out.println("Tests Finished");
 		// Add your own tests here.
 		// The autograder code will be used to test your basic functionality later.
@@ -139,7 +146,7 @@ public class ExploredGraph {
 	}
 	
 	class Operator {
-		private int i, j;
+		private int i, j;//i is origin j is destination
 
 		public Operator(int i, int j) {
 			this.i = i;
@@ -148,45 +155,35 @@ public class ExploredGraph {
 		
 		
 		public boolean getPrecondition(Vertex v){
-			boolean flag = false; 
+			if(v.pegs.get(i).size() == 0){//makes sure the client can't move a non existent disk 
+				System.out.println("Empty move");
+				return false;
+			}
 			
-			return flag;
+			if(v.pegs.get(j).size() == 0){//checks if the destination spot is empty if yes automatic move
+				return true; 
+			}
+			else if(v.pegs.get(i).peek() < v.pegs.get(j).peek()){//checks if the disk on top of the other stack is larger than the one about to be moved
+				System.out.println("legal move"); 
+				return true; 
+			}
+			return false;
 		}
 		
-		public Vertex getTransition(){
+		public Vertex getTransition(Vertex v){
 			
-			return null;
+			v.pegs.get(j).push(v.pegs.get(i).pop());//make the move
+			System.out.println("New State: "+v.toString());
+			Vertex v1 = new Vertex(v.toString());// create new node representing move
+			v.pegs.get(i).push(v.pegs.get(j).pop());//un do the move to restore to original state
+			System.out.println("Old State: " + v.toString());
+			return v1;
 		}
 		
-//		Function<Vertex, Boolean> getPrecondition() {
-//			// TODO: return a function that can be applied to a vertex (provided
-//			// that the precondition is true) to get a "successor" vertex -- the
-//			// result of making the move.
-//			return new Function<Vertex, Boolean>() {
-//				@Override
-//				public Boolean apply(Vertex vertex) {
-//					
-//					return false;
-//				}
-//			};
-//		}
-//
-//		Function<Vertex, Vertex> getTransition() {
-//			// TODO: should return a function that can be applied to a vertex
-//			// (provided that the precondition is true) to get a "successor"
-//			// vertex -- the result of making the move.
-//			return new Function<Vertex, Vertex>() {
-//				@Override
-//				public Vertex apply(Vertex vertex) {
-//					return null;
-//				}
-//			};
-//		}
-
 		public String toString() {
 			// TODO: return a string good enough
 			// to distinguish different operators
-			return "This is operator: [" + i + ", " + j+"]";
+			return "This is operator: [" + i + " to " + j+"]";
 		}
 	}
 
