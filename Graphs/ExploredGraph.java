@@ -33,10 +33,22 @@ import java.util.function.Function;
 public class ExploredGraph {
 	Set<Vertex> Ve; // collection of explored vertices
 	Set<Edge> Ee;   // collection of explored edges
+	Operator o01; //
+	Operator o02;
+	Operator o10;
+	Operator o12;
+	Operator o20;
+	Operator o21;
 	
 	public ExploredGraph() {
 		Ve = new LinkedHashSet<Vertex>();
 		Ee = new LinkedHashSet<Edge>();
+		o01 = new Operator(0,1);
+		o02 = new Operator(0,2);
+		o10 = new Operator(1,0);
+		o12 = new Operator(1,2);
+		o21 = new Operator(2,0);
+		o20 = new Operator(2,1);
 	}
 
 	public void initialize() {
@@ -57,7 +69,25 @@ public class ExploredGraph {
 	} // Implement this.
 	
 	public void bfs(Vertex vi, Vertex vj) {
-		
+		while(!vi.toString().equals(vj.toString())){
+			for(int i = 0; i < 2;i++){
+				for(int j = 0; j< 2; j++){
+					if(i != j){
+						Operator op = new Operator(i,j);
+						if(op.getPrecondition(vi)){
+							Ve.add(vi);
+							Vertex temp = op.getTransition(vi);
+							System.out.println("inital state: " + vi.toString());
+							System.out.println("After transition state: " + temp.toString());
+							Ee.add(new Edge(vi, temp)); 
+							
+							
+						}
+					}
+				}
+			}
+			
+		}
 	} // Implement this.
 	
 	public ArrayList<Vertex> retrievePath(Vertex vi) {
