@@ -1,8 +1,11 @@
 import java.util.List;
+import java.util.Objects;
+import java.util.Queue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Set;
 import java.util.Stack;
 import java.util.function.Function;
@@ -69,25 +72,39 @@ public class ExploredGraph {
 	} // Implement this.
 	
 	public void bfs(Vertex vi, Vertex vj) {
-		while(!vi.toString().equals(vj.toString())){
+			
+		initialize();
+		Vertex start = vi;
+		Vertex end = vj; 
+		Ve.add(vi);
+		Queue<Vertex> aux = new LinkedList<Vertex>();
+		aux.add(vi);
+		while(!aux.isEmpty()){
+			Vertex current = aux.remove();
 			for(int i = 0; i < 2;i++){
 				for(int j = 0; j< 2; j++){
 					if(i != j){
 						Operator op = new Operator(i,j);
-						if(op.getPrecondition(vi)){
-							Ve.add(vi);
-							Vertex temp = op.getTransition(vi);
-							System.out.println("inital state: " + vi.toString());
+						
+						if(op.getPrecondition(current)){
+							Ve.add(current);
+							Vertex temp = op.getTransition(current);
+							if(!Ve.contains(temp)){
+							
+							System.out.println("inital state: " + current.toString());
 							System.out.println("After transition state: " + temp.toString());
-							Ee.add(new Edge(vi, temp)); 
-							
-							
+							Ee.add(new Edge(current, temp)); 
+							Ve.add(temp);
+							aux.add(temp);
+							if(temp.equals(vj)){aux.clear();}
+							}
 						}
 					}
 				}
 			}
-			
 		}
+			
+		
 	} // Implement this.
 	
 	public ArrayList<Vertex> retrievePath(Vertex vi) {
@@ -108,7 +125,7 @@ public class ExploredGraph {
 		ExploredGraph eg = new ExploredGraph();
 		// Test the vertex constructor: 
 		Vertex v0 = eg.new Vertex("[[4,3,2,1],[],[]]");
-		Vertex v1 = eg.new Vertex("[[4,3,1],[],[2]]");
+		Vertex v1 = eg.new Vertex("[[],[],[4,3,2,1]]");
 		System.out.println(v0);
 		System.out.println(v1);
 		Edge e1 = eg.new Edge(v0, v1);
@@ -122,6 +139,8 @@ public class ExploredGraph {
 		}else{
 			System.out.println("Wrong Precondition");
 		}
+		
+		eg.bfs(v0,v1);
 		System.out.println("Tests Finished");
 		// Add your own tests here.
 		// The autograder code will be used to test your basic functionality later.
@@ -164,6 +183,21 @@ public class ExploredGraph {
 			ans += "]";
 			return ans;
 		}
+		
+		// determines a boolean representing whether or not two states (vertices) are equal
+				@Override
+				public boolean equals(Object o) {
+					if (this == o) return true;
+					if (o == null || getClass() != o.getClass()) return false;
+					Vertex vertex = (Vertex) o;
+					return o.toString().equals(this.toString());
+				}
+				
+				// hashes values for the LinkedHashSet
+				@Override
+				public int hashCode() {
+					return Objects.hash(pegs);
+				}
 	}
 	
 	//Represents an edge in a graph between two vertexes 
